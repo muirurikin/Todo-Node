@@ -12,3 +12,13 @@ var toDoSchema = new Schema({
 var Todos = mongoose.model('Todos', toDoSchema);
 
 module.exports = Todos;
+
+module.exports.addTodos = function (newTodo, callback) {
+    newTodo.save(callback);
+}
+module.exports.updateTodos = function (todos) {
+    
+}
+module.exports.removeTodos = function (todos) {
+    
+}
