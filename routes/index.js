@@ -10,24 +10,33 @@ var Todos = require('../models/todo');
 app.use(bodyParser.urlencoded( { extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-router.get('/api/todos/:uname', function(req, res) {
-    Todos.find({ username: req.params.uname }, function(err, todos) {
+router.get('/api/todos/', function(req, res) {
+    Todos.getTodos(function (err, todos) {
         if (err) throw err;
-        res.send(todos);
+        res.json(todos);
+    })
+});
+router.get('/api/todos/:_id', function(req, res) {
+    Todos.getTodoById(req.params._id, function(err, todo) {
+        if (err) {
+            throw err;
+        }
+        res.json(todo);
     });
 });
-router.post('/todos', function(req, res, next) {
-    var newTodo = new Todos({
-        username: 'test user',
-        todo: req.body.todo,
-        isDone: req.body.isDone,
-        hasAttachment: req.body.hasAttachment
-    });
-    Todos.addTodos(newTodo, function(err, todo) {
+router.post('/todos', function(req, res) {
+    var todo = req.body;
+    Todos.addTodos(todo, function(err, todo) {
         if (err) throw err;
-        res.send('Successful');
+        res.send('Todo Added');
     });
-    next();
+});
+router.delete('/todos/:_id', function(req, res) {
+    var id = req.params._id;
+    Todos.removeTodos(id, function(err, todo) {
+        if (err) throw err;
+        res.send('Todo Deleted');
+    });
 });
 
 module.exports = router;

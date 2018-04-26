@@ -13,12 +13,22 @@ var Todos = mongoose.model('Todos', toDoSchema);
 
 module.exports = Todos;
 
-module.exports.addTodos = function (newTodo, callback) {
-    newTodo.save(callback);
+//Get Todos
+module.exports.getTodos = function(callback, limit) {
+    Todos.find(callback).limit(limit);
+  }
+//Get Todo
+module.exports.getTodoById = function(id, callback) {
+    Todos.findById(id, callback);
+  }
+
+module.exports.addTodos = function (todo, callback) {
+    Todos.create(todo, callback);
 }
 module.exports.updateTodos = function (todos) {
-    
+
 }
-module.exports.removeTodos = function (todos) {
-    
+module.exports.removeTodos = function (id, callback) {
+    var query = { _id: id};
+    Todos.remove(query, callback)
 }
